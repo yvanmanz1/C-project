@@ -1,0 +1,251 @@
+#include<stdio.h>
+#include<stdlib.h>
+void record();
+void display();
+void update();
+void sort();
+void Delete();
+    struct shop
+{
+    int price;
+    int id;
+    int qty;
+    char type[10];
+
+}sh;
+void record()
+{
+	system("cls");
+        FILE *t;
+    t=fopen("shop.txt","a");
+
+printf("\t\tEnter item number:  ");
+scanf("%d",&sh.id);
+printf("\t\tEnter type of item:  ");
+scanf("%s",sh.type);
+printf("\t\tEnter quantity:  ");
+scanf("%d",&sh.qty);
+printf("\t\tEnter price:  ");
+scanf("%d",&sh.price);
+     printf("\n RECORDED SUCCESFULLY ! ");
+
+fprintf(t,"%d\t%s\t%d\t%d\n",sh.id,sh.type,sh.qty,sh.price);
+fclose(t);
+}
+void display()
+{
+    system("cls");
+    FILE *t;
+    t=fopen("shop.txt","r");
+    printf("ID\tTYPE\t\tQUANTITY\tPRICE\n");
+     while(!feof(t))
+    {
+        fscanf(t,"%d\t%s\t%d\t%d\n",&sh.id,sh.type,&sh.qty,&sh.price);
+        printf(" %d\t%s\t\t%d\t\t%d\n",sh.id,sh.type,sh.qty,sh.price);
+
+    }
+ fclose(t);
+
+	printf("\n\n\n *Press any key to go back...");
+	getch();
+
+}
+
+void search()
+{
+    system("cls");
+    FILE *t;
+    int srch;
+    printf("\n ***Enter ID to search: ");
+    scanf("%d",&srch);
+    t=fopen("shop.txt","r");
+    while(!feof(t))
+    {
+        fscanf(t,"%d\t%s\t%d\t%d",&sh.id,sh.type,&sh.qty,&sh.price);
+        if(sh.id==srch)
+        {
+           printf(" ID\tTYPE\tQUANTITY\tPRICE\n");
+                printf("\n %d\t%s\t%d\t%d\n",sh.id,sh.type,sh.qty,sh.price);
+             fclose(t);
+	        printf("\n\n  ***Press any key to go back...");
+	        getch();
+            return;
+        }
+    }
+     printf("\n  ITEM NOT FOUND IN OUR SHOP! ");
+     printf("\n  ***Press any key to try again...");
+     return search();
+     getch();
+}
+
+void update(){
+    system("cls");
+ 	struct shop up;
+ 	FILE *t;
+ 	FILE *del,*pp;
+    int idd, found=0;
+ 	t=fopen("shop.txt","r");
+ 	printf("\n\t\tEnter ID of Item to update:  ");
+ 	scanf("%d",&idd);
+ 	del=fopen("update.txt","w");
+ 	while (!feof(t)){
+ 		fscanf(t,"%d\t%s\t%d\t%d\n",&up.id,up.type,&up.qty,&up.price);
+ 		if(up.id!=idd){
+ 			fprintf(del,"%d\t%s\t%d\t%d\n",up.id,up.type,up.qty,up.price);
+		 }
+
+		 else{
+		 	found=1;
+		 }
+	 }
+	 fclose(t);
+	 fclose(del);
+	 remove("shop.txt");
+     pp=fopen("update.txt","a");
+        		printf(" UPDATING RECORD");
+                printf("\t\tEnter New ID:  ");
+    scanf("%d",&up.id);
+    printf("\t\tEnter New Type:  ");
+    scanf("%s",up.type);
+
+    printf("\t\tEnter New Quantity:  ");
+    scanf("%d",&up.qty);
+
+    printf("\t\tEnter New price:  ");
+    scanf("%d",&up.price);
+
+    fprintf(pp,"%d\t%s\t%d\t%d\n",up.id,up.type,up.qty,up.price);
+    printf("\n\t\tITEM UPDATED SUCCESSFULLY!!! \n\n");
+
+    fclose(pp);
+    rename("update.txt","shop.txt");
+}
+void sort()
+{
+  system("cls");
+  FILE *t;
+  struct shop bu[100],temp;
+  int ii,ou;
+  int min;
+  int ou_min;
+  int counter=0;
+  t=fopen("shop.txt","r");
+  while(!feof(t))
+  {
+      fscanf(t,"%d\t%s\t%d\t%d\n",&bu[counter].id,bu[counter].type,&bu[counter].qty,&bu[counter].price);
+      counter++;
+  }
+  fclose(t);
+  for(ou=0;ou<counter-1;ou++)
+  {
+      min=bu[ou].id;
+      ou_min=ou;
+      for(ii=ou+1;ii<counter;ii++)
+      {
+          if(bu[ii].id<min)
+          {
+              min=bu[ii].id;
+              ou_min=ii;
+          }
+      }
+      temp=bu[ou_min];
+      bu[ou_min]=bu[ou];
+      bu[ou]=temp;
+   }
+        printf("  ID\tTYPE\t\tQUANTITY\tPRICE\n" );
+          for(ou=0;ou<counter;ou++)
+    {
+        printf(" %d\t%s\t\t%d\t\t%d\n\n",bu[ou].id,bu[ou].type,bu[ou].qty,bu[ou].price);
+    }
+     printf("\n  LIST SUCCESSFULLY SORTED ");
+    getch();
+}
+void Delete()
+ {
+    system("cls");
+  int found=0,del;
+   FILE *t,*pp;
+
+     t=fopen("shop.txt","r");
+     pp=fopen("delete.txt","w");
+      system("cls");
+    printf("\t\tDelete an item\n");
+    printf("\t\tEnter ID to delete:  ");
+    scanf("%d",&del);
+
+      while(!feof(t)){
+            fscanf(t,"%d\t%s\t%d\t%d\n",&sh.id,sh.type,&sh.qty,&sh.price);
+            if(sh.id==del){
+                    found=1;
+            }else{
+
+        fprintf(pp,"%d\t%s\t%d\t%d\n",sh.id,sh.type,sh.qty,sh.price);
+
+
+            }
+            }
+      if(found){
+           fclose(t);
+           fclose(pp);
+           remove("shop.txt");
+           rename("delete.txt","shop.txt");
+        printf("\n  ITEM DELETED!!! ");
+   	 }else{
+        printf("\n\n\t ID not found\n\n");
+	 }
+      getch();
+}
+
+int main()
+{
+
+    int choice;
+
+     do{
+     printf("\nChoose an option:\n");
+	    printf("\n[1] Record new item\n");
+	    printf("[2] Display items\n");
+	    printf("[3] Search an item\n");
+	    printf("[4] Sort all records\n");
+    printf("[5] Update record\n");
+     printf("[6] Delete record\n");
+
+    printf("[7] Exit\n\n");
+    printf("\t\tEnter your choice:  ");
+    scanf("%d",&choice);
+
+    switch(choice)
+    {
+    case 1:
+        record();
+        break;
+    case 2:
+        display();
+        break;
+    case 3:
+        search();
+        break;
+    case 4:
+        sort();
+        break;
+       case 5:
+        	update();
+        	break;
+       case 6:
+        Delete();
+        break;
+    case 7:
+    system("cls");
+   printf(" Thank you, good bye! ");
+
+    exit(1);
+    break;
+   default:
+    system("cls");
+  printf(" INVALID INPUT!");
+    main();
+    break;
+        }
+}while(choice!=0);
+}
+
