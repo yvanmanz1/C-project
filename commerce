@@ -56,7 +56,7 @@ void search()
     system("cls");
     FILE *t;
     int srch;
-    printf("\n ***Enter ID to search: ");
+    printf("\n ***ENTER ID: ");
     scanf("%d",&srch);
     t=fopen("shop.txt","r");
     while(!feof(t))
@@ -105,13 +105,13 @@ void update(){
         		printf(" UPDATING RECORD");
                 printf("\t\tEnter New ID:  ");
     scanf("%d",&up.id);
-    printf("\t\tEnter New Type:  ");
+    printf("\t\tEnter new Type:  ");
     scanf("%s",up.type);
 
-    printf("\t\tEnter New Quantity:  ");
+    printf("\t\tEnter new Quantity:  ");
     scanf("%d",&up.qty);
 
-    printf("\t\tEnter New price:  ");
+    printf("\t\tEnter new price:  ");
     scanf("%d",&up.price);
 
     fprintf(pp,"%d\t%s\t%d\t%d\n",up.id,up.type,up.qty,up.price);
