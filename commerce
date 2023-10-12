@@ -19,7 +19,7 @@ void record()
         FILE *t;
     t=fopen("shop.txt","a");
 
-printf("\t\tEnter item number:  ");
+printf("\t\tEnter item ID:  ");
 scanf("%d",&sh.id);
 printf("\t\tEnter type of item:  ");
 scanf("%s",sh.type);
